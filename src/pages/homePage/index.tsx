@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { Card } from './components/Card';
-import { Modal } from 'antd';
+import { Modal, Skeleton } from 'antd';
 import { formatDateTime } from '../../utils/formatters';
 
 
@@ -43,11 +43,13 @@ export const Hompage = () => {
         setIsModalOpen(false);
     };
 
+    if(isLoading || !collectionResponse){
+        return <Skeleton active />
+    }
     return (
 
         <Wrapper>
             <h1 className='header'>Nfty <span className='header-span'>- Offer NFTs</span></h1>
-            {isLoading && <p>Loading...</p>}
             <CardContainer>
                 {collectionResponse?.map((data: any) => {
                     return <Card
