@@ -47,9 +47,8 @@ export const Hompage = () => {
 
         <Wrapper>
             <h1 className='header'>Nfty <span className='header-span'>- Offer NFTs</span></h1>
+            {isLoading && <p>Loading...</p>}
             <CardContainer>
-                {isLoading && <p>Loading...</p>}
-
                 {collectionResponse?.map((data: any) => {
                     return <Card
                         handleModal={() => handleModal(data.relay_id)}
