@@ -8,16 +8,18 @@ import { formatDateTime } from '../../utils/formatters';
 export const Hompage = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [nftDescription, setNFTDescription] = useState<any>();
+    const [isLoading, setIsloading] = useState(false);
 
     const [collectionResponse, setCollectionResponse] = useState<any>()
     const fetchNFTs = () => {
+        setIsloading(true)
         const options = { method: 'GET', headers: { accept: 'application/json' } };
 
         fetch('https://testnets-api.opensea.io/v2/orders/goerli/seaport/listings?limit=18', options)
             .then(response => response.json())
             .then(response => setCollectionResponse(response.orders))
             .catch(err => console.error(err));
-
+        setIsloading(false)
     }
     useEffect(() => {
         fetchNFTs();
@@ -46,27 +48,27 @@ export const Hompage = () => {
         <Wrapper>
             <h1 className='header'>Nfty <span className='header-span'>- Offer NFTs</span></h1>
             <CardContainer>
+                {isLoading && <p>Loading...</p>}
 
-          
-            {collectionResponse?.map((data: any) => {
-                return <Card
-                    handleModal={() => handleModal(data.relay_id)}
-                    key={data.relay_id}
-                    data={data}
-                />
-            })}
-            <Modal
-                title={nftDescription?.maker_asset_bundle.assets[0].name ? nftDescription?.maker_asset_bundle.assets[0].name : 'Unamed'}
-                open={isModalOpen}
-                onOk={() => handleOk(nftDescription?.maker_asset_bundle.assets[0].permalink)}
-                onCancel={handleCancel} okText="Purchase"
-                cancelText="Back"
-                className="description-modal"
-            >
-                <p className='nft-description'><span >Owner : </span>{nftDescription?.maker.user}</p>
-                <p className='nft-description'> <span>Collection : {nftDescription?.maker_asset_bundle.assets[0].asset_contract.name}</span></p>
-                <p className='nft-description'> <span>Closes : </span>{formatDateTime(nftDescription?.closing_date)}</p>
-            </Modal>
+                {collectionResponse?.map((data: any) => {
+                    return <Card
+                        handleModal={() => handleModal(data.relay_id)}
+                        key={data.relay_id}
+                        data={data}
+                    />
+                })}
+                <Modal
+                    title={nftDescription?.maker_asset_bundle.assets[0].name ? nftDescription?.maker_asset_bundle.assets[0].name : 'Unamed'}
+                    open={isModalOpen}
+                    onOk={() => handleOk(nftDescription?.maker_asset_bundle.assets[0].permalink)}
+                    onCancel={handleCancel} okText="Purchase"
+                    cancelText="Back"
+                    className="description-modal"
+                >
+                    <p className='nft-description'><span >Owner : </span>{nftDescription?.maker.user}</p>
+                    <p className='nft-description'> <span>Collection : {nftDescription?.maker_asset_bundle.assets[0].asset_contract.name}</span></p>
+                    <p className='nft-description'> <span>Closes : </span>{formatDateTime(nftDescription?.closing_date)}</p>
+                </Modal>
             </CardContainer>
         </Wrapper>
     )
