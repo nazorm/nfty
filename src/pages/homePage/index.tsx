@@ -75,6 +75,7 @@ export const Hompage = () => {
 const Wrapper = styled.div`
 width: 100%;
 text-align: center;
+font-family: 'Poppins', sans-serif;
 .header{
     margin-top: 5%;
         font-weight: 900;

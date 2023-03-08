@@ -27,11 +27,11 @@ export const Card = (props: INNFTCard) => {
 const Box = styled.div`
     cursor: pointer;
     width: 100%;
-    height: 300px;
+    height: 350px;
     box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
-    padding-top: 10px;
+    padding: 10px 0;
     img{
         width: 300px;
-        height: 250px;
+        height: 300px;
     }
 `;
